@@ -1,13 +1,24 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { ApiService } from './api.service';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet],
+  standalone: true,  // Aggiungi questa riga
+  imports: [CommonModule, HttpClientModule],  // Importa i moduli necessari
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css'],
+  providers: [ApiService]  // Puoi anche fornire il servizio qui se necessario
 })
 export class AppComponent {
-  title = 'front-end';
+  message: string = '';
+
+  constructor(private apiService: ApiService) {}
+
+  ngOnInit() {
+    this.apiService.getMessage().subscribe((data) => {
+      this.message = data.message;
+    });
+  }
 }
